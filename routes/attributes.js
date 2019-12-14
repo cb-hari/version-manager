@@ -1,17 +1,25 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+var Attribute = require("../models/attributes");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  db.query("select * from attributes", function(err, data) {
+router.get("/", function(req, res) {
+  Attribute.getAll(function(err, rows) {
     if (err) {
-      console.log(err);
+      res.json(err);
     } else {
-      res.render('index', { title: 'Express' });
-      console.log(data);
+      res.json(rows);
     }
   });
-  
 });
 
+router.post("/", function(req, res) {
+  console.log(req);
+  Attribute.create(req.body, function(err, rows) {
+    if (err) {
+      res.json(err);
+    } else {
+      res.json(rows);
+    }
+  });
+});
 module.exports = router;
